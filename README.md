@@ -1,181 +1,235 @@
 # Stable Diffusion web UI
 A browser interface based on Gradio library for Stable Diffusion.
 
-![](screenshot.png)
-
-## Features
-[Detailed feature showcase with images](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features):
-- Original txt2img and img2img modes
-- One click install and run script (but you still must install python and git)
-- Outpainting
-- Inpainting
-- Color Sketch
-- Prompt Matrix
-- Stable Diffusion Upscale
-- Attention, specify parts of text that the model should pay more attention to
-    - a man in a `((tuxedo))` - will pay more attention to tuxedo
-    - a man in a `(tuxedo:1.21)` - alternative syntax
-    - select text and press `Ctrl+Up` or `Ctrl+Down` (or `Command+Up` or `Command+Down` if you're on a MacOS) to automatically adjust attention to selected text (code contributed by anonymous user)
-- Loopback, run img2img processing multiple times
-- X/Y/Z plot, a way to draw a 3 dimensional plot of images with different parameters
-- Textual Inversion
-    - have as many embeddings as you want and use any names you like for them
-    - use multiple embeddings with different numbers of vectors per token
-    - works with half precision floating point numbers
-    - train embeddings on 8GB (also reports of 6GB working)
-- Extras tab with:
-    - GFPGAN, neural network that fixes faces
-    - CodeFormer, face restoration tool as an alternative to GFPGAN
-    - RealESRGAN, neural network upscaler
-    - ESRGAN, neural network upscaler with a lot of third party models
-    - SwinIR and Swin2SR ([see here](https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/2092)), neural network upscalers
-    - LDSR, Latent diffusion super resolution upscaling
-- Resizing aspect ratio options
-- Sampling method selection
-    - Adjust sampler eta values (noise multiplier)
-    - More advanced noise setting options
-- Interrupt processing at any time
-- 4GB video card support (also reports of 2GB working)
-- Correct seeds for batches
-- Live prompt token length validation
-- Generation parameters
-     - parameters you used to generate images are saved with that image
-     - in PNG chunks for PNG, in EXIF for JPEG
-     - can drag the image to PNG info tab to restore generation parameters and automatically copy them into UI
-     - can be disabled in settings
-     - drag and drop an image/text-parameters to promptbox
-- Read Generation Parameters Button, loads parameters in promptbox to UI
-- Settings page
-- Running arbitrary python code from UI (must run with `--allow-code` to enable)
-- Mouseover hints for most UI elements
-- Possible to change defaults/mix/max/step values for UI elements via text config
-- Tiling support, a checkbox to create images that can be tiled like textures
-- Progress bar and live image generation preview
-    - Can use a separate neural network to produce previews with almost none VRAM or compute requirement
-- Negative prompt, an extra text field that allows you to list what you don't want to see in generated image
-- Styles, a way to save part of prompt and easily apply them via dropdown later
-- Variations, a way to generate same image but with tiny differences
-- Seed resizing, a way to generate same image but at slightly different resolution
-- CLIP interrogator, a button that tries to guess prompt from an image
-- Prompt Editing, a way to change prompt mid-generation, say to start making a watermelon and switch to anime girl midway
-- Batch Processing, process a group of files using img2img
-- Img2img Alternative, reverse Euler method of cross attention control
-- Highres Fix, a convenience option to produce high resolution pictures in one click without usual distortions
-- Reloading checkpoints on the fly
-- Checkpoint Merger, a tab that allows you to merge up to 3 checkpoints into one
-- [Custom scripts](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Custom-Scripts) with many extensions from community
-- [Composable-Diffusion](https://energy-based-model.github.io/Compositional-Visual-Generation-with-Composable-Diffusion-Models/), a way to use multiple prompts at once
-     - separate prompts using uppercase `AND`
-     - also supports weights for prompts: `a cat :1.2 AND a dog AND a penguin :2.2`
-- No token limit for prompts (original stable diffusion lets you use up to 75 tokens)
-- DeepDanbooru integration, creates danbooru style tags for anime prompts
-- [xformers](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Xformers), major speed increase for select cards: (add `--xformers` to commandline args)
-- via extension: [History tab](https://github.com/yfszzx/stable-diffusion-webui-images-browser): view, direct and delete images conveniently within the UI
-- Generate forever option
-- Training tab
-     - hypernetworks and embeddings options
-     - Preprocessing images: cropping, mirroring, autotagging using BLIP or deepdanbooru (for anime)
-- Clip skip
-- Hypernetworks
-- Loras (same as Hypernetworks but more pretty)
-- A separate UI where you can choose, with preview, which embeddings, hypernetworks or Loras to add to your prompt 
-- Can select to load a different VAE from settings screen
-- Estimated completion time in progress bar
-- API
-- Support for dedicated [inpainting model](https://github.com/runwayml/stable-diffusion#inpainting-with-stable-diffusion) by RunwayML
-- via extension: [Aesthetic Gradients](https://github.com/AUTOMATIC1111/stable-diffusion-webui-aesthetic-gradients), a way to generate images with a specific aesthetic by using clip images embeds (implementation of [https://github.com/vicgalle/stable-diffusion-aesthetic-gradients](https://github.com/vicgalle/stable-diffusion-aesthetic-gradients))
-- [Stable Diffusion 2.0](https://github.com/Stability-AI/stablediffusion) support - see [wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#stable-diffusion-20) for instructions
-- [Alt-Diffusion](https://arxiv.org/abs/2211.06679) support - see [wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#alt-diffusion) for instructions
-- Now without any bad letters!
-- Load checkpoints in safetensors format
-- Eased resolution restriction: generated image's dimensions must be a multiple of 8 rather than 64
-- Now with a license!
-- Reorder elements in the UI from settings screen
-- [Segmind Stable Diffusion](https://huggingface.co/segmind/SSD-1B) support
-
-## Installation and Running
-Make sure the required [dependencies](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Dependencies) are met and follow the instructions available for:
-- [NVidia](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-NVidia-GPUs) (recommended)
-- [AMD](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-AMD-GPUs) GPUs.
-- [Intel CPUs, Intel GPUs (both integrated and discrete)](https://github.com/openvinotoolkit/stable-diffusion-webui/wiki/Installation-on-Intel-Silicon) (external wiki page)
-
-Alternatively, use online services (like Google Colab):
-
-- [List of Online Services](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Online-Services)
-
-### Installation on Windows 10/11 with NVidia-GPUs using release package
-1. Download `sd.webui.zip` from [v1.0.0-pre](https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/tag/v1.0.0-pre) and extract its contents.
-2. Run `update.bat`.
-3. Run `run.bat`.
-> For more details see [Install-and-Run-on-NVidia-GPUs](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-NVidia-GPUs)
-
-### Automatic Installation on Windows
-1. Install [Python 3.10.6](https://www.python.org/downloads/release/python-3106/) (Newer version of Python does not support torch), checking "Add Python to PATH".
-2. Install [git](https://git-scm.com/download/win).
-3. Download the stable-diffusion-webui repository, for example by running `git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git`.
-4. Run `webui-user.bat` from Windows Explorer as normal, non-administrator, user.
-
-### Automatic Installation on Linux
-1. Install the dependencies:
-```bash
-# Debian-based:
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><h1 tabindex="-1" dir="auto"><a id="user-content-stable-diffusion-web-ui" class="anchor" aria-hidden="true" tabindex="-1" href="#stable-diffusion-web-ui"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">  Stable Diffusion网页用户界面</font></font></h1>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基于 Gradio 库的浏览器界面，用于稳定扩散。</font></font></p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/AUTOMATIC1111/stable-diffusion-webui/blob/master/screenshot.png"><img src="/AUTOMATIC1111/stable-diffusion-webui/raw/master/screenshot.png" alt="" style="max-width: 100%;"></a></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-features" class="anchor" aria-hidden="true" tabindex="-1" href="#features"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">特征</font></font></h2>
+<p dir="auto"><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">带图像的详细功能展示</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">原始 txt2img 和 img2img 模式</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">一键安装并运行脚本（但仍然必须安装python和git）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">外画</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">修复</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">彩色素描</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">提示矩阵</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">稳定 扩散 高档</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">注意，指定模型应该更多关注的文本部分
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">穿a的男人</font></font><code>((tuxedo))</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">会更注重燕尾服</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">a man in a </font></font><code>(tuxedo:1.21)</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- 替代语法</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">选择文本并按</font></font><code>Ctrl+Up</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或</font></font><code>Ctrl+Down</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（</font><font style="vertical-align: inherit;">如果您使用的是 MacOS，</font></font><code>Command+Up</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">则按 或）自动调整对所选文本的注意力（由匿名用户贡献的代码）</font></font><code>Command+Down</code><font style="vertical-align: inherit;"></font></li>
+</ul>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Loopback，多次运行img2img处理</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">X/Y/Z 图，一种绘制具有不同参数的 3 维图像图的方法</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文本倒装
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">拥有任意数量的嵌入并使用您喜欢的任何名称</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用每个标记具有不同数量向量的多个嵌入</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">适用于半精度浮点数</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在 8GB 上训练嵌入（还有 6GB 工作的报告）</font></font></li>
+</ul>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">附加选项卡包含：
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">GFPGAN，修复人脸的神经网络</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CodeFormer，人脸修复工具，作为 GFPGAN 的替代品</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RealESRGAN，神经网络升级器</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ESRGAN，具有许多第三方模型的神经网络升级器</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SwinIR 和 Swin2SR（</font></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/2092" data-hovercard-type="pull_request" data-hovercard-url="/AUTOMATIC1111/stable-diffusion-webui/pull/2092/hovercard"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">参见此处</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">），神经网络升级器</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">LDSR，潜在扩散超分辨率升级</font></font></li>
+</ul>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">调整宽高比选项</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">采样方法选择
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">调整采样器 eta 值（噪声乘数）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">更高级的噪音设置选项</font></font></li>
+</ul>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">随时中断处理</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4GB 显卡支持（也有 2GB 工作报告）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">批次正确种子</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">实时提示令牌长度验证</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">发电参数
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于生成图像的参数与该图像一起保存</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">对于 PNG，在 PNG 块中；对于 JPEG，在 EXIF 中</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可以将图像拖到PNG信息选项卡以恢复生成参数并自动将其复制到UI中</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可以在设置中禁用</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">将图像/文本参数拖放到提示框中</font></font></li>
+</ul>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">读取生成参数按钮，将提示框中的参数加载到UI</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">设置页面</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从 UI 运行任意 python 代码（必须运行</font></font><code>--allow-code</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">才能启用）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">大多数 UI 元素的鼠标悬停提示</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可以通过文本配置更改 UI 元素的默认/混合/最大/步长值</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">平铺支持，用于创建可以像纹理一样平铺的图像的复选框</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">进度条和实时图像生成预览
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可以使用单独的神经网络来生成预览，几乎不需要 VRAM 或计算要求</font></font></li>
+</ul>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">否定提示，一个额外的文本字段，允许您列出您不想在生成的图像中看到的内容</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">样式，一种保存部分提示并稍后通过下拉菜单轻松应用它们的方法</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">变体，一种生成相同图像但有微小差异的方法</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">种子调整大小，一种生成相同图像但分辨率略有不同的方法</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CLIP询问器，一个尝试从图像中猜测提示的按钮</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">提示剪辑，中代换提示的一种方式，比如说开始做西瓜，中途换成动漫少女</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">批处理，使用img2img处理一组文件</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Img2img 交叉注意力控制的替代、反向欧拉方法</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Highres Fix，一种方便的选项，只需单击一下即可生成高分辨率图片，而不会出现常见的扭曲</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">即时重新加载检查点</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">检查点合并，该选项卡允许您将最多 3 个检查点合并为一个</font></font></li>
+<li><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Custom-Scripts"><font style="vertical-align: inherit;"></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">具有来自社区的许多扩展的</font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Custom-Scripts"><font style="vertical-align: inherit;">自定义脚本</font></a></font></li>
+<li><a href="https://energy-based-model.github.io/Compositional-Visual-Generation-with-Composable-Diffusion-Models/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Composable-Diffusion</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，一种同时使用多个提示的方法
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用大写字母分隔提示</font></font><code>AND</code></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">还支持提示的权重：</font></font><code>a cat :1.2 AND a dog AND a penguin :2.2</code></li>
+</ul>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">提示无代币限制（原创稳定扩散最多可使用 75 个代币）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DeepDanbooru 集成，为动漫提示创建 danbooru 风格标签</font></font></li>
+<li><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Xformers"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">xformers</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，选择卡的主要速度提升：（添加</font></font><code>--xformers</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">到命令行参数）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过扩展：</font></font><a href="https://github.com/yfszzx/stable-diffusion-webui-images-browser"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">历史记录选项卡</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：在 UI 中方便地查看、定向和删除图像</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">生成永久选项</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">训练选项卡
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">超网络和嵌入选项</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">预处理图像：使用 BLIP 或 deepdanbooru（针对动漫）进行裁剪、镜像、自动标记</font></font></li>
+</ul>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">剪辑跳过</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">超网络</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Loras（与 Hypernetworks 相同但更漂亮）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">一个单独的 UI，您可以通过预览选择要添加到提示中的嵌入、超网络或 Loras</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可以选择从设置屏幕加载不同的 VAE</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">进度条中的预计完成时间</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">应用程序编程接口</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RunwayML</font><font style="vertical-align: inherit;">支持专用</font></font><a href="https://github.com/runwayml/stable-diffusion#inpainting-with-stable-diffusion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">修复模型</font></font></a><font style="vertical-align: inherit;"></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过扩展：</font></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui-aesthetic-gradients"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Aesthetic Gradients</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，一种通过使用剪辑图像嵌入来生成具有特定美感的图像的方法（</font></font><a href="https://github.com/vicgalle/stable-diffusion-aesthetic-gradients"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/vicgalle/stable-diffusion-aesthetic-gradients</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">的实现）</font></font></li>
+<li><a href="https://github.com/Stability-AI/stablediffusion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">稳定扩散 2.0</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">支持 - 请参阅</font></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#stable-diffusion-20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">wiki</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">获取说明</font></font></li>
+<li><a href="https://arxiv.org/abs/2211.06679" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Alt-Diffusion</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">支持 -</font><font style="vertical-align: inherit;">有关说明，请参阅</font></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#alt-diffusion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">wiki</font></font></a><font style="vertical-align: inherit;"></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">现在没有任何不好的字母了！</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">以 safetensors 格式加载检查点</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">放宽分辨率限制：生成图像的尺寸必须是 8 的倍数而不是 64</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">现在有执照了！</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从设置屏幕重新排序 UI 中的元素</font></font></li>
+<li><a href="https://huggingface.co/segmind/SSD-1B" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Segmind 稳定扩散</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">支持</font></font></li>
+</ul>
+<h2 tabindex="-1" dir="auto"><a id="user-content-installation-and-running" class="anchor" aria-hidden="true" tabindex="-1" href="#installation-and-running"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装与运行</font></font></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">确保满足所需的</font></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Dependencies"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">依赖关系</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，并按照以下可用说明进行操作：</font></font></p>
+<ul dir="auto">
+<li><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-NVidia-GPUs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">英伟达</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（推荐）</font></font></li>
+<li><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-AMD-GPUs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AMD</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> GPU。</font></font></li>
+<li><a href="https://github.com/openvinotoolkit/stable-diffusion-webui/wiki/Installation-on-Intel-Silicon"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Intel CPU、Intel GPU（集成和独立）</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（外部 wiki 页面）</font></font></li>
+</ul>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或者，使用在线服务（例如 Google Colab）：</font></font></p>
+<ul dir="auto">
+<li><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Online-Services"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在线服务列表</font></font></a></li>
+</ul>
+<h3 tabindex="-1" dir="auto"><a id="user-content-installation-on-windows-1011-with-nvidia-gpus-using-release-package" class="anchor" aria-hidden="true" tabindex="-1" href="#installation-on-windows-1011-with-nvidia-gpus-using-release-package"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用发行包在带有 NVidia-GPU 的 Windows 10/11 上安装</font></font></h3>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"></font><code>sd.webui.zip</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从</font></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/tag/v1.0.0-pre"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">v1.0.0-pre</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">下载</font><font style="vertical-align: inherit;">并解压其内容。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">跑步</font></font><code>update.bat</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">跑步</font></font><code>run.bat</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></li>
+</ol>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">有关更多详细信息，请参阅</font></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-NVidia-GPUs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在 NVidia-GPU 上安装并运行</font></font></a></p>
+</blockquote>
+<h3 tabindex="-1" dir="auto"><a id="user-content-automatic-installation-on-windows" class="anchor" aria-hidden="true" tabindex="-1" href="#automatic-installation-on-windows"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Windows 上自动安装</font></font></h3>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装</font></font><a href="https://www.python.org/downloads/release/python-3106/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Python 3.10.6</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（较新版本的Python不支持torch），选中“Add Python to PATH”。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装</font></font><a href="https://git-scm.com/download/win" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">git</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">下载 stable-diffusion-webui 存储库，例如通过运行</font></font><code>git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.</font></font></li>
+<li><font style="vertical-align: inherit;"></font><code>webui-user.bat</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">以普通非管理员用户身份从 Windows 资源管理器</font><font style="vertical-align: inherit;">运行。</font></font></li>
+</ol>
+<h3 tabindex="-1" dir="auto"><a id="user-content-automatic-installation-on-linux" class="anchor" aria-hidden="true" tabindex="-1" href="#automatic-installation-on-linux"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Linux 上的自动安装</font></font></h3>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装依赖项：</font></font></li>
+</ol>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-c"><span class="pl-c">#</span> Debian-based:</span>
+sudo apt install wget git python3 python3-venv libgl1 libglib2.0-0
+<span class="pl-c"><span class="pl-c">#</span> Red Hat-based:</span>
+sudo dnf install wget git python3 gperftools-libs libglvnd-glx 
+<span class="pl-c"><span class="pl-c">#</span> openSUSE-based:</span>
+sudo zypper install wget git python3 libtcmalloc4 libglvnd
+<span class="pl-c"><span class="pl-c">#</span> Arch-based:</span>
+sudo pacman -S wget git python3</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="# Debian-based:
 sudo apt install wget git python3 python3-venv libgl1 libglib2.0-0
 # Red Hat-based:
 sudo dnf install wget git python3 gperftools-libs libglvnd-glx 
 # openSUSE-based:
 sudo zypper install wget git python3 libtcmalloc4 libglvnd
 # Arch-based:
-sudo pacman -S wget git python3
-```
-2. Navigate to the directory you would like the webui to be installed and execute the following command:
-```bash
-wget -q https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/webui.sh
-```
-3. Run `webui.sh`.
-4. Check `webui-user.sh` for options.
-### Installation on Apple Silicon
-
-Find the instructions [here](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Installation-on-Apple-Silicon).
-
-## Contributing
-Here's how to add code to this repo: [Contributing](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Contributing)
-
-## Documentation
-
-The documentation was moved from this README over to the project's [wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki).
-
-For the purposes of getting Google and other search engines to crawl the wiki, here's a link to the (not for humans) [crawlable wiki](https://github-wiki-see.page/m/AUTOMATIC1111/stable-diffusion-webui/wiki).
-
-## Credits
-Licenses for borrowed code can be found in `Settings -> Licenses` screen, and also in `html/licenses.html` file.
-
-- Stable Diffusion - https://github.com/Stability-AI/stablediffusion, https://github.com/CompVis/taming-transformers
-- k-diffusion - https://github.com/crowsonkb/k-diffusion.git
-- GFPGAN - https://github.com/TencentARC/GFPGAN.git
-- CodeFormer - https://github.com/sczhou/CodeFormer
-- ESRGAN - https://github.com/xinntao/ESRGAN
-- SwinIR - https://github.com/JingyunLiang/SwinIR
-- Swin2SR - https://github.com/mv-lab/swin2sr
-- LDSR - https://github.com/Hafiidz/latent-diffusion
-- MiDaS - https://github.com/isl-org/MiDaS
-- Ideas for optimizations - https://github.com/basujindal/stable-diffusion
-- Cross Attention layer optimization - Doggettx - https://github.com/Doggettx/stable-diffusion, original idea for prompt editing.
-- Cross Attention layer optimization - InvokeAI, lstein - https://github.com/invoke-ai/InvokeAI (originally http://github.com/lstein/stable-diffusion)
-- Sub-quadratic Cross Attention layer optimization - Alex Birch (https://github.com/Birch-san/diffusers/pull/1), Amin Rezaei (https://github.com/AminRezaei0x443/memory-efficient-attention)
-- Textual Inversion - Rinon Gal - https://github.com/rinongal/textual_inversion (we're not using his code, but we are using his ideas).
-- Idea for SD upscale - https://github.com/jquesnelle/txt2imghd
-- Noise generation for outpainting mk2 - https://github.com/parlance-zz/g-diffuser-bot
-- CLIP interrogator idea and borrowing some code - https://github.com/pharmapsychotic/clip-interrogator
-- Idea for Composable Diffusion - https://github.com/energy-based-model/Compositional-Visual-Generation-with-Composable-Diffusion-Models-PyTorch
-- xformers - https://github.com/facebookresearch/xformers
-- DeepDanbooru - interrogator for anime diffusers https://github.com/KichangKim/DeepDanbooru
-- Sampling in float32 precision from a float16 UNet - marunine for the idea, Birch-san for the example Diffusers implementation (https://github.com/Birch-san/diffusers-play/tree/92feee6)
-- Instruct pix2pix - Tim Brooks (star), Aleksander Holynski (star), Alexei A. Efros (no star) - https://github.com/timothybrooks/instruct-pix2pix
-- Security advice - RyotaK
-- UniPC sampler - Wenliang Zhao - https://github.com/wl-zhao/UniPC
-- TAESD - Ollin Boer Bohan - https://github.com/madebyollin/taesd
-- LyCORIS - KohakuBlueleaf
-- Restart sampling - lambertae - https://github.com/Newbeeer/diffusion_restart_sampling
-- Hypertile - tfernd - https://github.com/tfernd/HyperTile
-- Initial Gradio script - posted on 4chan by an Anonymous user. Thank you Anonymous user.
-- (You)
+sudo pacman -S wget git python3" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<ol start="2" dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">导航到您想要安装 WebUI 的目录并执行以下命令：</font></font></li>
+</ol>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>wget -q https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/webui.sh</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="wget -q https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/webui.sh" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<ol start="3" dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">跑步</font></font><code>webui.sh</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">检查</font></font><code>webui-user.sh</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">选项。</font></font></li>
+</ol>
+<h3 tabindex="-1" dir="auto"><a id="user-content-installation-on-apple-silicon" class="anchor" aria-hidden="true" tabindex="-1" href="#installation-on-apple-silicon"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在 Apple Silicon 上安装</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Installation-on-Apple-Silicon"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">请在此处</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">查找说明</font><font style="vertical-align: inherit;">。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-contributing" class="anchor" aria-hidden="true" tabindex="-1" href="#contributing"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Contributing"><font style="vertical-align: inherit;">以下是向此存储库添加</font></a><font style="vertical-align: inherit;">代码的方法：</font></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Contributing"><font style="vertical-align: inherit;"></font></a></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-documentation" class="anchor" aria-hidden="true" tabindex="-1" href="#documentation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文档</font></font></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文档已从本自述文件移至项目的</font></font><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">wiki</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">为了让 Google 和其他搜索引擎抓取 wiki，这里有一个指向（不适用于人类）</font></font><a href="https://github-wiki-see.page/m/AUTOMATIC1111/stable-diffusion-webui/wiki" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可抓取 wiki 的</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">链接。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-credits" class="anchor" aria-hidden="true" tabindex="-1" href="#credits"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">制作人员</font></font></h2>
+<p dir="auto"><font style="vertical-align: inherit;"></font><code>Settings -&gt; Licenses</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">借用代码的许可证可以在屏幕和文件中</font><font style="vertical-align: inherit;">找到</font></font><code>html/licenses.html</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">稳定</font><a href="https://github.com/CompVis/taming-transformers"><font style="vertical-align: inherit;">扩散</font></a><font style="vertical-align: inherit;">- </font></font><a href="https://github.com/Stability-AI/stablediffusion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/Stability-AI/stablediffusion，https://github.com/CompVis/taming-transformers</font></font></a><font style="vertical-align: inherit;"></font><a href="https://github.com/CompVis/taming-transformers"><font style="vertical-align: inherit;"></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">k-扩散 - </font></font><a href="https://github.com/crowsonkb/k-diffusion.git"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/crowsonkb/k-diffusion.git</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">GFPGAN - </font></font><a href="https://github.com/TencentARC/GFPGAN.git"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/TencentARC/GFPGAN.git</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CodeFormer - </font></font><a href="https://github.com/sczhou/CodeFormer"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/sczhou/CodeFormer</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ESRGAN - </font></font><a href="https://github.com/xinntao/ESRGAN"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/xinntao/ESRGAN</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SwinIR - </font></font><a href="https://github.com/JingyunLiang/SwinIR"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/JingyunLiang/SwinIR</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Swin2SR - </font></font><a href="https://github.com/mv-lab/swin2sr"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/mv-lab/swin2sr</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">LDSR - </font></font><a href="https://github.com/Hafiidz/latent-diffusion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/Hafiidz/latent-diffusion</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">MiDaS - </font></font><a href="https://github.com/isl-org/MiDaS"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/isl-org/MiDaS</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">优化想法 - </font></font><a href="https://github.com/basujindal/stable-diffusion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/basujindal/stable-diffusion</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">交叉注意力层优化 - Doggettx - </font></font><a href="https://github.com/Doggettx/stable-diffusion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/Doggettx/stable-diffusion</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，即时编辑的原始想法。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">交叉注意力层优化 - InvokeAI，lstein - </font></font><a href="https://github.com/invoke-ai/InvokeAI"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/invoke-ai/InvokeAI</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（最初为</font></font><a href="http://github.com/lstein/stable-diffusion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">http://github.com/lstein/stable-diffusion</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">次二次交叉注意力层优化 - Alex Birch ( </font></font><a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1511276440" data-permission-text="Title is private" data-url="https://github.com/Birch-san/diffusers/issues/1" data-hovercard-type="pull_request" data-hovercard-url="/Birch-san/diffusers/pull/1/hovercard" href="https://github.com/Birch-san/diffusers/pull/1"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Birch-san/diffusers#1</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> )、Amin Rezaei ( </font></font><a href="https://github.com/AminRezaei0x443/memory-efficient-attention"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/AminRezaei0x443/memory-efficient-attention</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> )</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文本倒置 - Rinon Gal - </font></font><a href="https://github.com/rinongal/textual_inversion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/rinongal/textual_inversion</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（我们没有使用他的代码，但我们正在使用他的想法）。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SD 高档创意 - </font></font><a href="https://github.com/jquesnelle/txt2imghd"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/jquesnelle/txt2imghd</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于绘制 mk2 的噪声生成 - </font></font><a href="https://github.com/parlance-zz/g-diffuser-bot"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/parlance-zz/g-diffuser-bot</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CLIP 询问器想法并借用一些代码 - </font></font><a href="https://github.com/pharmapsychotic/clip-interrogator"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/pharmapsychotic/clip-interrogator</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可组合扩散的想法 - </font></font><a href="https://github.com/energy-based-model/Compositional-Visual-Generation-with-Composable-Diffusion-Models-PyTorch"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/energy-based-model/Compositional-Visual-Generation-with-Composable-Diffusion-Models-PyTorch</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">xformers - </font></font><a href="https://github.com/facebookresearch/xformers"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/facebookresearch/xformers</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DeepDanbooru - 动漫扩散器询问器</font></font><a href="https://github.com/KichangKim/DeepDanbooru"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/KichangKim/DeepDanbooru</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从 float16 UNet 中以 float32 精度采样 - marunine 的想法，Birch-san 的示例 Diffusers 实现（</font></font><a href="https://github.com/Birch-san/diffusers-play/tree/92feee6"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/Birch-san/diffusers-play/tree/92feee6</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">指导 pix2pix - Tim Brooks（明星）、Aleksander Holynski（明星）、Alexei A. Efros（无明星） - </font></font><a href="https://github.com/timothybrooks/instruct-pix2pix"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/timothybrooks/instruct-pix2pix</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安全建议 - RyotaK</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">UniPC 采样器 - Wenliang Zhu - </font></font><a href="https://github.com/wl-zhao/UniPC"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/wl-zhao/UniPC</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">TAESD - Ollin Boer Bohan - </font></font><a href="https://github.com/madebyollin/taesd"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/madebyollin/taesd</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">LyCORIS - 红白蓝叶</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">重新启动采样 - lambertae - </font></font><a href="https://github.com/Newbeeer/diffusion_restart_sampling"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/Newbeeer/diffusion_restart_sampling</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Hypertile - tfernd - </font></font><a href="https://github.com/tfernd/HyperTile"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://github.com/tfernd/HyperTile</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">初始 Gradio 脚本 - 由匿名用户发布在 4chan 上。</font><font style="vertical-align: inherit;">谢谢匿名用户。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（你）</font></font></li>
+</ul>
+</article></div>
